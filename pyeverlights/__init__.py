@@ -35,7 +35,7 @@ class EverLights:
             self._auto_session = True
 
         try:
-            async with self._session.get('http://'+self._ip+path,
+            async with self._session.get('http://'+self._ip+'/v1',
                                          params=params) as response:
                 data = await response.json()
                 _LOGGER.debug(str(response.url) + ' response: ' +
@@ -49,7 +49,7 @@ class EverLights:
             raise ConnectionError from e
 
     async def get_status(self):
-        resp = await self._fetch('/status/get')
+        resp = await self._fetch('')
         return resp
 
     async def set_pattern(self, channel, colors=[], modes={}):
@@ -59,7 +59,7 @@ class EverLights:
             'modes': modes,
             'name': ''
         }
-        await self._fetch('/ptrn/set', {
+        await self._fetch('/sequences', {
             'channel': channel,
             'data': json.dumps(data)
         })
